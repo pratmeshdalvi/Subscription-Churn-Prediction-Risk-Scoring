@@ -1,0 +1,41 @@
+Category,Entity,Test Name,Rows Evaluated,Issues Found,Status,Severity,Remediation / Treatment
+Primary Key,Customers,PK Uniqueness (customer_id),20000,0,PASS,High,Reject duplicates
+Primary Key,Subscriptions,PK Uniqueness (subscription_id),20000,0,PASS,High,Reject duplicates
+Primary Key,Usage,PK Uniqueness (activity_id),318985,0,PASS,High,Reject duplicates
+Grain Consistency,Usage,Composite Grain (customer_id + activity_month),318985,0,PASS,High,Aggregate to monthly level
+Primary Key,Payments,PK Uniqueness (payment_id),235720,0,PASS,High,Reject duplicate transactions
+Primary Key,Support Tickets,PK Uniqueness (ticket_id),40923,0,PASS,High,Reject duplicate ticket IDs
+Primary Key,Churn Outcomes,PK Uniqueness (customer_id),20000,0,PASS,High,Single outcome per customer
+Referential Integrity,Subscriptions,Foreign Key Integrity (customer_id),20000,0,PASS,Critical,Drop/investigate orphan subscriptions
+Referential Integrity,Usage,Foreign Key Integrity (customer_id),318985,0,PASS,Critical,Investigate usage from unlisted accounts
+Referential Integrity,Payments,Foreign Key Integrity (customer_id),235720,0,PASS,Critical,Investigate rogue transactions
+Referential Integrity,Support Tickets,Foreign Key Integrity (customer_id),40923,0,PASS,Critical,Investigate unregistered ticket submitters
+Referential Integrity,Churn Outcomes,Foreign Key Integrity (customer_id),20000,0,PASS,Critical,Align churn target with master customer list
+Referential Completeness,Customers,Customer has Subscription Record,20000,0,PASS,Medium,Confirm 1:1 customer-subscription ratio
+Referential Completeness,Customers,Customer has Churn Outcome Record,20000,0,PASS,Critical,Target outcome required for all cohort members
+Completeness,All Tables,Zero Unexpected Missing Fields,655628,0,PASS,Medium,Impute or drop unexplainable nulls
+Completeness,Support Tickets,CSAT Non-Response Rate Profile,40923,790,FLAG,Low,Handle via indicator flag or median imputation during modeling
+Chronological Order,Subscriptions,start_date equals signup_date,20000,0,PASS,High,Synchronize start date with onboarding date
+Chronological Order,Subscriptions,end_date >= start_date,20000,0,PASS,Critical,Investigate corrupted subscription cancellation dates
+Chronological Order,Payments,payment_date >= signup_date,235720,0,PASS,High,Investigate pre-signup transactions
+Chronological Order,Support Tickets,ticket_date >= signup_date,40923,0,PASS,High,Investigate pre-signup support requests
+Domain Value Range,Customers,Valid domain categories for age_group,20000,0,PASS,High,"Map unexpected categories into {'25-34', '35-44', '55+', '45-54', '18-24'}"
+Domain Value Range,Customers,Valid domain categories for region,20000,0,PASS,High,"Map unexpected categories into {'North America', 'Latin America', 'Europe', 'Asia-Pacific', 'MEA'}"
+Domain Value Range,Customers,Valid domain categories for acquisition_channel,20000,0,PASS,High,"Map unexpected categories into {'Paid Ads', 'Social Media', 'Direct', 'Organic Search', 'Partner', 'Referral'}"
+Domain Value Range,Subscriptions,Valid domain categories for plan,20000,0,PASS,High,"Map unexpected categories into {'Pro', 'Basic', 'Enterprise'}"
+Domain Value Range,Subscriptions,Valid domain categories for billing_cycle,20000,0,PASS,High,"Map unexpected categories into {'Annual', 'Monthly'}"
+Domain Value Range,Subscriptions,Valid domain categories for discount_pct,20000,0,PASS,High,"Map unexpected categories into {0, 10, 20}"
+Domain Value Range,Subscriptions,Valid domain categories for auto_renew,20000,0,PASS,High,"Map unexpected categories into {0, 1}"
+Domain Value Range,Payments,Valid domain categories for payment_status,235720,0,PASS,High,"Map unexpected categories into {'Success', 'Refunded', 'Failed'}"
+Domain Value Range,Payments,Valid domain categories for payment_method,235720,0,PASS,High,"Map unexpected categories into {'PayPal', 'Credit Card', 'ACH Bank Transfer', 'Debit Card'}"
+Domain Value Range,Support Tickets,Valid domain categories for issue_type,40923,0,PASS,High,"Map unexpected categories into {'Feature Request', 'Billing', 'Technical Bug', 'Onboarding', 'Account Management'}"
+Domain Value Range,Churn Outcomes,Valid domain categories for churn_flag,20000,0,PASS,High,"Map unexpected categories into {0, 1}"
+Boundary Checks,Subscriptions,"monthly_fee within [$12.0, $199.0]",20000,0,PASS,High,Investigate anomalous pricing tiers
+Boundary Checks,Payments,amount >= 0.0 (no negative revenue),235720,0,PASS,High,Correct or investigate negative transaction amounts
+Boundary Checks,Usage Activity,sessions_count >= 0,318985,0,PASS,High,Zero negative login counts
+Boundary Checks,Usage Activity,active_days <= 31 days/month,318985,0,PASS,High,Cap active days at calendar limit
+Boundary Checks,Support Tickets,"CSAT rating bounded [1.0, 5.0]",40133,0,PASS,Medium,Clip CSAT to 1.0 - 5.0 scale
+Data Leakage,Usage Activity,activity_month <= 2025-06 (Cutoff Audit),318985,0,PASS,Critical,Strictly filter out usage past prediction cutoff
+Data Leakage,Payments,payment_date <= 2025-06-30 (Cutoff Audit),235720,0,PASS,Critical,Strictly filter out payments past prediction cutoff
+Data Leakage,Support Tickets,ticket_date <= 2025-06-30 (Cutoff Audit),40923,0,PASS,Critical,Strictly filter out tickets past prediction cutoff
+Outcome Validity,Churn Outcomes,churn_date in outcome window (>= 2025-07-01),20000,0,PASS,Critical,Ensure target outcome lies strictly in future window
