@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Subscription Churn Prediction & Risk Scoring -- Executive Report</title>
+<style>
+  @page { size: A4; margin: 1.5cm 2cm; @bottom-center { content: "Page " counter(page) " of " counter(pages); font-size: 9px; color: #94a3b8; } }
+  * { box-sizing: border-box; }
+  body { font-family: Helvetica, Arial, sans-serif; font-size: 11px; color: #1e293b; line-height: 1.5; }
+  h1 { font-size: 20px; color: #0f172a; margin: 0 0 4px 0; }
+  h2 { font-size: 16px; color: #1d3557; margin: 20px 0 10px 0; border-bottom: 2px solid #1d3557; padding-bottom: 4px; }
+  h3 { font-size: 13px; color: #334155; margin: 14px 0 6px 0; }
+  .header { background-color: #0f172a; color: white; padding: 20px 24px; margin: -1.5cm -2cm 20px -2cm; }
+  .header p { color: #94a3b8; font-size: 11px; margin: 4px 0 0 0; }
+  .header .author { color: #64748b; font-size: 10px; margin-top: 8px; }
+  .kpi-row { display: flex; gap: 10px; margin: 10px 0; }
+  .kpi { flex: 1; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; text-align: center; }
+  .kpi-label { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-value { font-size: 22px; font-weight: bold; margin: 2px 0; }
+  .kpi-sub { font-size: 9px; color: #64748b; }
+  .red { color: #e63946; }
+  .green { color: #2a9d8f; }
+  .orange { color: #f4a261; }
+  .navy { color: #1d3557; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 10px; }
+  th { background-color: #f1f5f9; padding: 6px 10px; text-align: left; font-size: 10px; border-bottom: 2px solid #cbd5e1; color: #475569; }
+  td { padding: 6px 10px; border-bottom: 1px solid #e2e8f0; }
+  .insight { border-left: 4px solid #1d3557; background-color: #f8fafc; padding: 8px 14px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 10px; }
+  .insight-red { border-left-color: #e63946; background-color: #fef2f2; }
+  .insight-green { border-left-color: #2a9d8f; background-color: #f0fdf4; }
+  .insight-orange { border-left-color: #f4a261; background-color: #fffbeb; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 9px; font-weight: bold; color: white; }
+  .pill-red { background-color: #e63946; }
+  .pill-orange { background-color: #f4a261; }
+  .pill-yellow { background-color: #e9c46a; color: #1e293b; }
+  .pill-green { background-color: #2a9d8f; }
+  .pill-navy { background-color: #1d3557; }
+  .section { margin-bottom: 16px; }
+  .two-col { display: flex; gap: 10px; }
+  .two-col > div { flex: 1; }
+  .page-break { page-break-after: always; }
+  .qa-block { margin: 8px 0; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; }
+  .qa-label { font-size: 11px; font-weight: bold; color: #1d3557; margin-bottom: 4px; }
+  .qa-answer { font-size: 10px; color: #475569; line-height: 1.6; }
+  .step { display: flex; gap: 8px; margin: 6px 0; align-items: flex-start; }
+  .step-num { width: 22px; height: 22px; background: #1d3557; color: white; border-radius: 50%; text-align: center; line-height: 22px; font-size: 10px; font-weight: bold; flex-shrink: 0; }
+  .step-text { font-size: 10px; }
+  .step-title { font-weight: bold; font-size: 11px; }
+  .rec-box { padding: 8px 12px; border-radius: 6px; margin: 4px 0; font-size: 10px; }
+  .rec-red { background-color: #fef2f2; }
+  .rec-orange { background-color: #fffbeb; }
+  .rec-yellow { background-color: #fefce8; }
+  .rec-green { background-color: #f0fdf4; }
+  ul { padding-left: 18px; margin: 4px 0; }
+  li { margin: 3px 0; }
+  .footer { text-align: center; color: #94a3b8; font-size: 9px; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ========== COVER / HEADER ========== -->
+<div class="header">
+  <h1>Subscription Churn Prediction &amp; Risk Scoring</h1>
+  <p>End-to-End Data Analytics Project -- Executive Report &amp; Technical Documentation</p>
+  <div class="author">Author: Pratmesh Dalvi &nbsp;|&nbsp; Date: November 2026 &nbsp;|&nbsp; GitHub: github.com/pratmeshdalvi/Subscription-Churn-Prediction-Risk-Scoring</div>
+</div>
+
+<!-- ========== SECTION 1: OVERVIEW ========== -->
+<h2>1. Executive Dashboard at a Glance</h2>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-label">Total Customers</div><div class="kpi-value navy">20,000</div><div class="kpi-sub">5 Global Regions</div></div>
+  <div class="kpi"><div class="kpi-label">Total MRR</div><div class="kpi-value green">$872,984</div><div class="kpi-sub">$10.5M ARR</div></div>
+  <div class="kpi" style="border-left: 4px solid #e63946;"><div class="kpi-label">ARR at Risk</div><div class="kpi-value red">$1.07M</div><div class="kpi-sub red">10.2% of Total ARR</div></div>
+  <div class="kpi" style="border-left: 4px solid #f4a261;"><div class="kpi-label">At-Risk Accounts</div><div class="kpi-value orange">2,484</div><div class="kpi-sub orange">12.4% of Base</div></div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-label">Overall Churn Rate</div><div class="kpi-value red">33.0%</div><div class="kpi-sub">6,603 Churned</div></div>
+  <div class="kpi"><div class="kpi-label">Expected Monthly Loss</div><div class="kpi-value red">$274,093</div><div class="kpi-sub">Probability-Weighted</div></div>
+  <div class="kpi"><div class="kpi-label">Model ROC-AUC</div><div class="kpi-value navy">0.75</div><div class="kpi-sub">Gradient Boosting</div></div>
+  <div class="kpi"><div class="kpi-label">Critical Accounts</div><div class="kpi-value red">270</div><div class="kpi-sub red">96.7% Actual Churn Rate</div></div>
+</div>
+
+<h3>Raw Data Sources</h3>
+<table>
+  <tr><th>Dataset</th><th>Records</th><th>Columns</th><th>Description</th></tr>
+  <tr><td><b>customers.csv</b></td><td>20,000</td><td>6</td><td>Demographics, signup date, acquisition channel, region</td></tr>
+  <tr><td><b>usage.csv</b></td><td>318,985</td><td>7</td><td>Monthly sessions, hours, features used, active days</td></tr>
+  <tr><td><b>payments.csv</b></td><td>235,720</td><td>6</td><td>Transaction amount, success/failure status, payment method</td></tr>
+  <tr><td><b>support_tickets.csv</b></td><td>40,923</td><td>6</td><td>Issue type, resolution time, CSAT score (1-5)</td></tr>
+</table>
+<div style="font-size: 9px; color: #64748b;">Total: <b>615,628 records</b> across 4 relational datasets, linked by customer_id</div>
+
+<div class="page-break"></div>
+
+<!-- ========== SECTION 2: PROBLEM & APPROACH ========== -->
+<h2>2. Problem Statement &amp; Approach</h2>
+
+<h3>The Business Problem</h3>
+<p>A SaaS subscription company with <b>20,000 customers</b> and <b>$10.5M in Annual Recurring Revenue (ARR)</b> was experiencing significant customer churn. The company had <b>no systematic way</b> to:</p>
+<ul>
+  <li>Identify which customers are about to cancel their subscription</li>
+  <li>Understand <em>why</em> customers are leaving (pricing? support? product usage?)</li>
+  <li>Quantify how much revenue is at risk in dollar terms</li>
+  <li>Prioritize which accounts the Customer Success team should call first</li>
+</ul>
+
+<div class="insight insight-red">
+  <b>The Cost of Doing Nothing:</b> Without intervention, the company stands to lose <b>$274,093 every month</b> ($3.3M annually) in expected revenue, and <b>$1.07M ARR</b> is directly exposed through 2,484 high-risk accounts.
+</div>
+
+<h3>Our Approach (Step by Step)</h3>
+<div class="step"><div class="step-num">1</div><div class="step-text"><span class="step-title">Data Collection &amp; Validation:</span> Collected 615,628 records across 4 datasets. Validated schema, nulls, duplicates, referential integrity.</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-text"><span class="step-title">SQL Analytics &amp; EDA:</span> Wrote 10 SQL scripts + 15+ visualizations revealing churn patterns by plan, tenure, region.</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-text"><span class="step-title">Statistical Hypothesis Testing:</span> Z-tests, T-tests, Chi-squared, ANOVA. All key churn drivers showed p &lt; 0.001.</div></div>
+<div class="step"><div class="step-num">4</div><div class="step-text"><span class="step-title">Feature Engineering:</span> Engineered 27 predictive features with temporal cutoff at June 30, 2025 to prevent data leakage.</div></div>
+<div class="step"><div class="step-num">5</div><div class="step-text"><span class="step-title">ML Model Training:</span> Trained Logistic Regression, Random Forest, Gradient Boosting. Best: GBM with 0.75 ROC-AUC.</div></div>
+<div class="step"><div class="step-num">6</div><div class="step-text"><span class="step-title">Risk Scoring &amp; Deliverables:</span> Converted probabilities into 0-100 risk scores, 4 tiers, root cause identification, and revenue-at-risk calculations.</div></div>
+<div class="step"><div class="step-num">7</div><div class="step-text"><span class="step-title">Power BI Dashboard:</span> Built 3-page interactive dashboard: Executive Overview -> Churn Drivers -> Action Center.</div></div>
+
+<h3>How We Improved The Business (The A -> B -> C Framework)</h3>
+<table>
+  <tr><th>We Did (A)</th><th>To Improve (B)</th><th>By Doing (C)</th></tr>
+  <tr><td>Built Payment Failure Detection</td><td>Reduce involuntary churn (54.2%)</td><td>Flagging 11,714 accounts; enabling dunning retry at Days 3, 5, 7</td></tr>
+  <tr><td>Created Risk Score (0-100) per customer</td><td>Enable proactive retention</td><td>Using Gradient Boosting ML on 27 features to predict churn probability</td></tr>
+  <tr><td>Identified 2,484 High/Critical accounts</td><td>Focus CSM team on highest-value saves</td><td>Generating priority list sorted by expected monthly loss ($)</td></tr>
+  <tr><td>Proved Monthly churn 1.6× more than Annual</td><td>Increase customer lock-in</td><td>Recommending "2 months free" promotion for Annual upgrades</td></tr>
+  <tr><td>Linked low CSAT (avg 2.06) to high risk</td><td>Improve satisfaction before it causes churn</td><td>Setting up escalation alerts when CSAT &lt;= 2 to route to Senior Support</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ========== SECTION 3: KEY FINDINGS ========== -->
+<h2>3. Key Findings &amp; Data Insights</h2>
+
+<h3>Finding #1: Payment Failure is the #1 Churn Driver (54.2%)</h3>
+<div class="two-col">
+  <div>
+    <table>
+      <tr><th></th><th>With Failed Payments</th><th>Without Failed Payments</th></tr>
+      <tr><td><b>Accounts</b></td><td>11,714</td><td>8,286</td></tr>
+      <tr><td><b>Churned</b></td><td class="red"><b>3,470 (29.6%)</b></td><td class="green"><b>432 (5.2%)</b></td></tr>
+      <tr><td><b>Avg Risk Score</b></td><td>41.6</td><td>20.9</td></tr>
+      <tr><td><b>Expected Loss</b></td><td class="red"><b>$204,014/mo</b></td><td>$70,079/mo</td></tr>
+    </table>
+  </div>
+</div>
+<div class="insight insight-red"><b>Interpretation:</b> Customers with >=1 failed payment are <b>5.7× more likely to churn</b>. Payment failure alone accounts for <b>74.4% of all expected revenue loss</b>. This is largely "involuntary churn" -- customers didn't choose to leave; their payment method failed.</div>
+
+<h3>Finding #2: Monthly Contracts Churn 1.6× More Than Annual</h3>
+<table>
+  <tr><th>Billing Cycle</th><th>Customers</th><th>Churned</th><th>Avg Churn Probability</th></tr>
+  <tr><td>Monthly</td><td>13,898</td><td class="red"><b>3,426</b></td><td class="red"><b>37.5%</b></td></tr>
+  <tr><td>Annual</td><td>6,102</td><td class="green"><b>476</b></td><td class="green"><b>22.9%</b></td></tr>
+</table>
+<div class="insight insight-orange"><b>Interpretation:</b> Monthly subscribers = 69.5% of base but generate 82.5% of all churn. Annual contracts create "lock-in." Converting 15% of Monthly to Annual saves ~$45K+ MRR.</div>
+
+<h3>Finding #3: Low CSAT Strongly Predicts Churn</h3>
+<table>
+  <tr><th>Segment</th><th>Avg CSAT (out of 5)</th></tr>
+  <tr><td>High/Critical Risk Accounts</td><td class="red"><b>2.06</b></td></tr>
+  <tr><td>All Customers (Average)</td><td>3.02</td></tr>
+  <tr><td>Low Risk (Healthy) Accounts</td><td class="green"><b>3.40</b></td></tr>
+</table>
+<div class="insight"><b>Interpretation:</b> High-risk customers have CSAT 1.34 points lower than healthy customers. Poor support experiences drive lasting dissatisfaction and churn.</div>
+
+<h3>Finding #4: Risk Tier Distribution &amp; Revenue Exposure</h3>
+<table>
+  <tr><th>Risk Tier</th><th>Accounts</th><th>% of Base</th><th>Avg Churn Prob</th><th>Total MRR</th><th>Expected Loss/Mo</th></tr>
+  <tr><td><span class="pill pill-green">Low</span></td><td>10,100</td><td>50.5%</td><td>17.2%</td><td>$451,291</td><td>$73,589</td></tr>
+  <tr><td><span class="pill pill-yellow">Medium</span></td><td>7,416</td><td>37.1%</td><td>42.3%</td><td>$332,826</td><td>$139,150</td></tr>
+  <tr><td><span class="pill pill-orange">High</span></td><td>2,214</td><td>11.1%</td><td>67.8%</td><td>$80,801</td><td>$54,566</td></tr>
+  <tr><td><span class="pill pill-red">Critical</span></td><td>270</td><td>1.4%</td><td>83.6%</td><td>$8,066</td><td>$6,788</td></tr>
+</table>
+
+<h3>Finding #5: Churn by Subscription Plan</h3>
+<table>
+  <tr><th>Plan</th><th>Customers</th><th>Churned</th><th>Avg Fee</th><th>Avg Risk Score</th></tr>
+  <tr><td>Basic ($12-15/mo)</td><td>10,894</td><td class="red"><b>2,393</b></td><td>$14.42</td><td>35.2</td></tr>
+  <tr><td>Pro ($44-49/mo)</td><td>7,110</td><td>1,159</td><td>$47.02</td><td>30.2</td></tr>
+  <tr><td>Enterprise ($199/mo)</td><td>1,996</td><td>350</td><td>$191.18</td><td>30.8</td></tr>
+</table>
+<div class="insight"><b>Interpretation:</b> Basic Plan has highest churn volume. But each Enterprise churner = $199/mo loss (13× a Basic customer), making them the most expensive individual losses.</div>
+
+<h3>Finding #6: Churn Drivers Ranked by Revenue Impact</h3>
+<table>
+  <tr><th>Driver</th><th>Accounts</th><th>Avg Risk Score</th><th>Expected Monthly Loss</th><th>% of Total</th></tr>
+  <tr><td class="red"><b>Payment Failure</b></td><td>11,714</td><td>41.6</td><td class="red"><b>$204,014</b></td><td><b>74.4%</b></td></tr>
+  <tr><td>Poor Support Experience</td><td>2,918</td><td>31.8</td><td>$38,788</td><td>14.2%</td></tr>
+  <tr><td>General Attrition</td><td>2,949</td><td>13.9</td><td>$16,514</td><td>6.0%</td></tr>
+  <tr><td>Monthly Contract Friction</td><td>2,335</td><td>16.0</td><td>$14,246</td><td>5.2%</td></tr>
+  <tr><td>Declining Usage</td><td>84</td><td>18.6</td><td>$532</td><td>0.2%</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ========== SECTION 4: BUSINESS Q&A ========== -->
+<h2>4. Stakeholder Business Questions -- Answered</h2>
+
+<div class="qa-block">
+  <div class="qa-label">Q1: How much churn is happening?</div>
+  <div class="qa-answer">Our overall churn rate is <b>33.0%</b> (6,603 out of 20,000 customers). One in 3 customers has either churned or is highly likely to churn. The expected monthly revenue loss is <b>$274,093/month</b>, translating to <b>$3.29M annually</b>.</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q2: Which customer segments churn the most?</div>
+  <div class="qa-answer"><b>Basic Monthly subscribers</b> are the highest-churning segment (avg risk 35.2, 2,393 churned). Monthly billing customers churn at <b>37.5%</b> vs 22.9% for Annual. By region, North America (1,610) and Europe (1,131) have the highest absolute churn volumes.</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q3: What behavioral factors are associated with churn?</div>
+  <div class="qa-answer">Top 5 drivers ranked by revenue impact: (1) <b>Payment Failure</b> -- $204,014/mo (74.4%), (2) <b>Poor Support</b> -- $38,788/mo (14.2%), (3) <b>General Attrition</b> -- $16,514/mo (6.0%), (4) <b>Monthly Contract Friction</b> -- $14,246/mo (5.2%), (5) <b>Declining Usage</b> -- $532/mo (0.2%).</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q4: How does churn vary by subscription plan?</div>
+  <div class="qa-answer"><b>Basic:</b> Highest churn count (2,393) -- lower price = less switching cost. <b>Pro:</b> Moderate (1,159) -- deeper feature engagement aids retention. <b>Enterprise:</b> Lowest rate (350) -- but each churner = $199/mo loss, making them the costliest individual losses.</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q5: How does tenure affect churn?</div>
+  <div class="qa-answer">Risk increases with tenure: <b>0-6 months</b> (avg risk 26.1) -> <b>25-30 months</b> (avg risk 37.3). Longer-tenured customers have experienced more cumulative payment failures and support issues. The "fatigue zone" is at 19+ months.</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q6: Does payment behavior influence churn?</div>
+  <div class="qa-answer"><b>Absolutely -- it is the single strongest predictor.</b> Accounts with >=1 failed payment: <b>29.6% churn rate</b> (risk 41.6). Zero failures: <b>5.2% churn rate</b> (risk 20.9). That is a <b>5.7× difference</b>. Failed payments = $204,014 monthly expected loss (74.4% of all loss).</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q7: Which customers are currently at high risk?</div>
+  <div class="qa-answer"><b>2,484 accounts</b> (12.4%) are High or Critical: 270 Critical (83.6% churn prob, need 48-hour outreach) and 2,214 High (67.8%, need proactive campaign). Top 5 highest-risk are Enterprise Monthly with payment failures and CSAT below 2.0.</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q8: What is the potential revenue at risk?</div>
+  <div class="qa-answer"><b>$88,866 MRR</b> ($1.07M ARR) is tied to High/Critical accounts. Probability-weighted expected loss = <b>$274,093/month</b> ($3.29M annually). Saving 30% of at-risk accounts protects approximately <b>$320,000+ annually</b>.</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q9: Which customers should the business prioritize?</div>
+  <div class="qa-answer">Priority by "Expected Monthly Loss" ranking: <b>Tier 1</b> -- 270 Critical accounts -> Personal phone call by Sr. CSM this week. <b>Tier 2</b> -- 2,214 High accounts -> Personalized email + discount offer within 2 weeks. <b>Tier 3</b> -- 7,416 Medium -> Automated health check emails.</div>
+</div>
+
+<div class="qa-block">
+  <div class="qa-label">Q10: What actions could reduce churn?</div>
+  <div class="qa-answer">4 highest-ROI interventions: (1) <b>Payment Dunning Automation</b> -- save $61K/mo, (2) <b>Monthly->Annual Conversion</b> -- save $30.5K/mo, (3) <b>CSAT Escalation</b> -- save $9.7K/mo, (4) <b>Usage Re-Engagement</b> -- save $213/mo. Total projected savings: <b>$1.22M/year</b>.</div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ========== SECTION 5: IMPACT & RECOMMENDATIONS ========== -->
+<h2>5. Business Impact &amp; Strategic Recommendations</h2>
+
+<h3>Projected Financial Impact of Recommended Actions</h3>
+<table>
+  <tr><th>Intervention</th><th>Target Population</th><th>Save Rate</th><th>MRR Saved</th><th>ARR Saved</th></tr>
+  <tr><td>Payment Dunning Automation</td><td>11,714 accounts</td><td>30%</td><td class="green"><b>$61,204</b></td><td class="green"><b>$734,448</b></td></tr>
+  <tr><td>Annual Upgrade Promotion</td><td>13,898 monthly accounts</td><td>15%</td><td class="green"><b>$30,500</b></td><td class="green"><b>$366,000</b></td></tr>
+  <tr><td>CSAT Escalation SOP</td><td>2,918 low-CSAT accounts</td><td>25%</td><td class="green"><b>$9,697</b></td><td class="green"><b>$116,364</b></td></tr>
+  <tr><td>Usage Re-Engagement</td><td>84 accounts</td><td>40%</td><td class="green"><b>$213</b></td><td class="green"><b>$2,556</b></td></tr>
+  <tr style="background-color: #f0fdf4; font-weight: bold;"><td>TOTAL PROJECTED SAVINGS</td><td></td><td></td><td class="green">$101,614/mo</td><td class="green">$1,219,368/yr</td></tr>
+</table>
+
+<div class="insight insight-green"><b>Bottom Line:</b> Implementing all 4 interventions could save <b>$1.22M in annual revenue</b> -- a 37% reduction in total expected losses -- with payment dunning delivering over 60% of the savings.</div>
+
+<h3>Model Performance &amp; Validation</h3>
+<table>
+  <tr><th>Metric</th><th>Value</th><th>Interpretation</th></tr>
+  <tr><td>ROC-AUC Score</td><td><b>0.75</b></td><td>Good discriminative power; 75% accurate at separating churners from non-churners</td></tr>
+  <tr><td>Top 10% Lift</td><td><b>2.41×</b></td><td>Targeting top 10% captures 24.1% of all churners (2.41× better than random)</td></tr>
+  <tr><td>Top 20% Lift</td><td><b>2.11×</b></td><td>Targeting top 20% captures 42.1% of all churners</td></tr>
+  <tr><td>Critical Tier Accuracy</td><td><b>96.7%</b></td><td>96.7% of accounts classified "Critical" actually churned</td></tr>
+</table>
+
+<h3>Implementation Priority Roadmap</h3>
+<div class="rec-box rec-red"><b><span class="pill pill-red">Week 1-2</span> Quick Win:</b> Start calling 270 Critical accounts immediately using high_risk_retention_list.csv. Assign 10-15 accounts per CSM per day.</div>
+<div class="rec-box rec-orange"><b><span class="pill pill-orange">Week 2-4</span> Payment Recovery:</b> Set up automated dunning system: auto-retry at Days 3, 5, 7 + pre-expiry card update reminders. Expected recovery: 30%+ of failed payments.</div>
+<div class="rec-box rec-yellow"><b><span class="pill pill-yellow">Month 2</span> Annual Conversion:</b> Launch Monthly->Annual campaign: "2 months free" for Annual upgrade. 15% conversion = 2,085 accounts locked in for 12 months.</div>
+<div class="rec-box rec-green"><b><span class="pill pill-green">Month 3</span> Support &amp; Engagement:</b> Auto-escalate tickets with CSAT &lt;= 2 to Senior Support within 4 hours. Deploy in-app product walkthroughs for declining-usage accounts.</div>
+
+<div class="page-break"></div>
+
+<!-- ========== SECTION 6: TECHNICAL ========== -->
+<h2>6. Technical Details</h2>
+
+<h3>Technology Stack</h3>
+<p>
+  <span class="pill pill-navy">Python 3.13</span>
+  <span class="pill pill-navy">Pandas</span>
+  <span class="pill pill-navy">Scikit-Learn</span>
+  <span class="pill pill-navy">Matplotlib / Seaborn</span>
+  <span class="pill pill-navy">SQL Server</span>
+  <span class="pill pill-navy">Power BI</span>
+  <span class="pill pill-navy">Git / GitHub</span>
+  <span class="pill pill-navy">Jupyter Notebooks</span>
+</p>
+
+<h3>Notebook-by-Notebook Summary</h3>
+<table>
+  <tr><th>Notebook</th><th>Purpose</th><th>Key Output</th></tr>
+  <tr><td><b>01_data_validation</b></td><td>Schema checks, null analysis, duplicates, referential integrity</td><td>Clean data, zero critical issues</td></tr>
+  <tr><td><b>02_eda</b></td><td>Univariate &amp; bivariate analysis, churn distribution plots</td><td>15+ visualizations</td></tr>
+  <tr><td><b>03_statistical_analysis</b></td><td>Z-tests, T-tests, Chi-squared, ANOVA</td><td>All drivers significant (p &lt; 0.001)</td></tr>
+  <tr><td><b>04_feature_engineering</b></td><td>Create 27 predictive features with temporal cutoff</td><td>customer_features.csv</td></tr>
+  <tr><td><b>05_model_training</b></td><td>Train LR, RF, GBM. Evaluate ROC-AUC, Precision, Recall</td><td>Best: GBM (AUC = 0.75)</td></tr>
+  <tr><td><b>06_risk_scoring</b></td><td>0-100 risk scores, 4 tiers, root cause, revenue at risk</td><td>customer_risk_scores.csv</td></tr>
+</table>
+
+<h3>Project Repository Structure</h3>
+<pre style="font-size: 9px; background: #f1f5f9; padding: 10px; border-radius: 6px; line-height: 1.6;">
+Subscription-Churn-Prediction-Risk-Scoring/
+|---- data/raw/           (4 source CSVs: 615,628 total records)
+|---- data/processed/     (customer_features.csv + customer_risk_scores.csv)
+|---- notebooks/          (6 Jupyter notebooks: validation -> risk scoring)
+|---- sql/                (10 SQL analysis scripts)
+|---- outputs/            (high_risk_retention_list.csv -- 2,484 accounts)
+|---- reports/            (Executive Report HTML + PDF)
+|---- powerbi/            (Theme JSON + SVG layout templates)
+|---- churn.pbix          (Power BI Dashboard -- 3 pages)
+|---- README.md
+</pre>
+
+<div class="footer">
+  Subscription Churn Prediction &amp; Risk Scoring -- Pratmesh Dalvi &copy; 2026<br>
+  GitHub: github.com/pratmeshdalvi/Subscription-Churn-Prediction-Risk-Scoring
+</div>
+
+</body>
+</html>
